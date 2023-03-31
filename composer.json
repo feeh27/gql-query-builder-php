@@ -1,0 +1,20 @@
+{
+    "name": "mathsgod/gql-query-builder-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raymond Chong",
+            "email": "mathsgod@yahoo.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "files": [
+            "src/polyfill.php",
+            "src/QueryBuilder.php"
+        ],
+        "psr-4": {
+            "GQLQueryBuilder\\": "src/"
+        }
+    }
+}
