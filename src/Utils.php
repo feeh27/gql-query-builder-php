@@ -56,13 +56,15 @@ class Utils
 
         // set object based variable properties
         if (is_array($variable)) {
-            if ($variable["list"] === true) {
-                $type = "[$type]";
-            } else if (is_array($variable["list"])) {
-                $type = "[$type" . ($variable["list"][0] ? "!" : "") . "]";
+            if (isset($variable["list"])) {
+                if ($variable["list"] === true) {
+                    $type = "[$type]";
+                } else if (is_array($variable["list"])) {
+                    $type = "[$type" . ($variable["list"][0] ? "!" : "") . "]";
+                }
             }
 
-            if ($variable["required"]) {
+            if (isset($variable["required"]) && $variable["required"]) {
                 $type .= "!";
             }
         }
