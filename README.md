@@ -251,5 +251,43 @@ Array
 ```
 
 
+#### Subscription (with required variables):
+
+```php
+$query = mutation([
+    "operation" => "userSignup",
+    "variables" => [
+        "name" => [
+            "value" => "Jon Doe",
+        ],
+        "email" => [
+            "value" => "jon.doe@example.com", "required" => true
+        ],
+        "password" => [
+            "value" => "123456", "required" => true
+        ],
+    ],
+    "fields" => ["userId"]
+]);
+
+print_r($query);
+
+/*
+
+Array
+(
+    [query] => mutation($name: String, $email: String!, $password: String!) { userSignup(name: $name, email: $email, password: $password) { userId } }
+    [variables] => Array
+        (
+            [name] => Jon Doe
+            [email] => jon.doe@example.com
+            [password] => 123456
+        )
+)
+    
+*/
+```
+
+
 
 
