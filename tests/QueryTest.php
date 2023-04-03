@@ -89,7 +89,7 @@ final class QueryTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'query($id: ID, $id2: ID) { someoperation(id: $id) { nestedoperation (id: $id2)  { field1 }  } }',
+            'query($id: ID, $id2: ID) { someoperation(id: $id) { nestedoperation (id: $id2) { field1 } } }',
             $query["query"]
         );
 
@@ -145,6 +145,44 @@ final class QueryTest extends TestCase
 
         $this->assertEquals(
             'query { getFilteredUsersCount, getAllUsersCount, getFilteredUsers { count } }',
+            $query["query"]
+        );
+    }
+
+    public function testQueryWithAlias()
+    {
+        $query = query([
+            "operation" => [
+                "name" => "thoughts",
+                "alias" => "myThoughts"
+            ],
+            "fields" => ["id", "name", "thought"]
+        ]);
+
+        $this->assertEquals(
+            'query { myThoughts: thoughts { id, name, thought } }',
+            $query["query"]
+        );
+    }
+
+    public function testQueryWithInlineFragment()
+    {
+        $query = query([
+            "operation" => "thought",
+            "fields" => [
+                "id",
+                "name",
+                "thought",
+                [
+                    "operation" => "FragmentType",
+                    "fields" => ["emotion"],
+                    "fragment" => true
+                ]
+            ]
+        ]);
+
+        $this->assertEquals(
+            'query { thought { id, name, thought, ... on FragmentType { emotion } } }',
             $query["query"]
         );
     }

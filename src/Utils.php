@@ -89,19 +89,30 @@ class Utils
 
     public static function isFragment($field)
     {
-        return is_array($field) && isset($field["fregment"]) && $field["fregment"] === true;
+        return is_array($field) && isset($field["fragment"]) && $field["fragment"] === true;
     }
 
     public static function getFragment($field): string
     {
-        return self::isFragment($field) ? "... on" : "";
+        return self::isFragment($field) ? "... on " : "";
     }
 
     public static function queryNestedFieldMap($field)
     {
-        return self::getFragment($field) . self::operationOrFragment($field) . " " .
-            (self::isFragment($field) ? "" : self::queryDataNameAndArgumentMap($field["variables"])) . " " .
-            ($field["fields"] ? " { " . self::queryFieldsMap($field["fields"]) . " } " : "");
+        $str = self::getFragment($field) . self::operationOrFragment($field) . " ";
+
+        if (!self::isFragment($field)) {
+            if (isset($field["variables"])) {
+                $str .= self::queryDataNameAndArgumentMap($field["variables"]) . " ";
+            }
+        }
+
+        if ($field["fields"]) {
+            $str .= "{ " . self::queryFieldsMap($field["fields"]) . " }";
+        }
+
+
+        return $str;
     }
 
 
@@ -145,7 +156,7 @@ class Utils
 
                     $variables = array_merge(
                         $variables,
-                        $field['variables'],
+                        $field['variables'] ?? [],
                         self::getDeepestVariables($field['fields'], $variables)
                     );
                 } else {
