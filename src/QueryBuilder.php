@@ -24,3 +24,14 @@ function mutation(array $options): array
         return $defaultAdapter->mutationBuilder();
     }
 }
+
+function subscription(array $options): array
+{
+    if (array_is_list($options)) {
+        $defaultAdapter = new DefaultSubscriptionAdapter($options);
+        return $defaultAdapter->subscriptionsBuilder($options);
+    } else {
+        $defaultAdapter = new DefaultSubscriptionAdapter($options);
+        return $defaultAdapter->subscriptionBuilder();
+    }
+}
