@@ -1,5 +1,9 @@
 # GraphQL Query Builder for PHP
 
+A simple helper function to build GraphQL queries, mutations and subscriptions use PHP.
+
+This project is based on [GraphQL Query Builder](https://www.npmjs.com/package/gql-query-builder) for Node.js.
+
 ## Install
 
 `composer require mathsgod/gql-query-builder`
@@ -214,4 +218,38 @@ Array
 )
 */
 ```
+
+#### Mutation:
+
+```php
+
+$mutation=mutation([
+    "operation"=>"createThought",
+    "variables"=>[
+        "name"=>"John Doe",
+        "thought"=>"Hello World"
+    ],
+    "fields"=>["id","name","thought"]
+]);
+
+print_r($mutation);
+
+/*
+
+Array
+(
+    [query] => mutation($name: String, $thought: String) { createThought(name: $name, thought: $thought) { id name thought } }
+    [variables] => Array
+        (
+            [name] => John Doe
+            [thought] => Hello World
+        )
+
+)
+
+*/
+```
+
+
+
 
