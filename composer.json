@@ -16,6 +16,9 @@
             "GQLQueryBuilder\\": "src/"
         }
     },
+    "require": {
+        "php": "^8.0"
+    },
     "require-dev": {
         "phpunit/phpunit": "^9.6"
     },
