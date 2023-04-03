@@ -12,3 +12,15 @@ function query(array $options): array
         return $defaultAdapter->queryBuilder();
     }
 }
+
+
+function mutation(array $options): array
+{
+    if (array_is_list($options)) {
+        $defaultAdapter = new DefaultMutationAdapter($options);
+        return $defaultAdapter->mutationsBuilder($options);
+    } else {
+        $defaultAdapter = new DefaultMutationAdapter($options);
+        return $defaultAdapter->mutationBuilder();
+    }
+}

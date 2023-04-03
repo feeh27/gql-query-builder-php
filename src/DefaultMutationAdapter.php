@@ -30,10 +30,33 @@ class DefaultMutationAdapter
         );
     }
 
+    public function mutationsBuilder($queries)
+    {
+        $tmp = [];
+
+        foreach ($queries as $query) {
+            if ($query) {
+                $this->operation = $query['operation'];
+                if (isset($query['fields'])) {
+                    $this->fields = $query['fields'];
+                }
+
+                if (isset($query["variables"])) {
+                    $this->variables = $query['variables'];
+                }
+
+
+                $tmp[] = $this->operationTemplate();
+            }
+        }
+
+        return $this->operationWrapperTemplate(implode(", ", $tmp));
+    }
+
     private function operationWrapperTemplate(string $content)
     {
         $query = "mutation";
-        $query .= $this->queryDataArgumentAndTypeMap() . " { " . $content . " }";
+        $query .= $this->queryDataArgumentAndTypeMap() . " { " . $content . "}";
 
         return [
             "query" => $query,
@@ -60,11 +83,11 @@ class DefaultMutationAdapter
             return '';
         }
     }
-    
+
     private function operationTemplate(?array $variables = null)
     {
         $operation = is_string($this->operation) ? $this->operation : $this->operation['alias'] . ': ' . $this->operation['name'];
 
-        return $operation . ($variables ? Utils::queryDataNameAndArgumentMap($variables) : '') . ($this->fields && count($this->fields) > 0 ? '{ ' . Utils::queryFieldsMap($this->fields) . ' }' : '');
+        return $operation . ($variables ? Utils::queryDataNameAndArgumentMap($variables) : '') . ($this->fields && count($this->fields) > 0 ? ' { ' . Utils::queryFieldsMap($this->fields) . ' } ' : '');
     }
 }
