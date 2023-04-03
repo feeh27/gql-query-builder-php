@@ -1,5 +1,7 @@
 # GraphQL Query Builder for PHP
 
+[![PHP Composer](https://github.com/mathsgod/gql-query-builder-php/actions/workflows/php.yml/badge.svg)](https://github.com/mathsgod/gql-query-builder-php/actions/workflows/php.yml)
+
 A simple helper function to build GraphQL queries, mutations and subscriptions use PHP.
 
 This project is based on [GraphQL Query Builder](https://www.npmjs.com/package/gql-query-builder) for Node.js.
