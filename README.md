@@ -25,6 +25,14 @@ $subscription=subscription($options);
 `options is ["operation","field","variables"] or an array of options`
 
 ### Examples
+1. <a href="#query">Query</a>
+2. <a href="#query-with-variables">Query (with variables)</a>
+3. <a href="#query-with-nested-fields-selection">Query (with nested fields selection)</a>
+4. <a href="#query-with-custom-argument-name">Query (with custom argument name)</a>
+5. <a href=#query-with-required-variables>Query (with required variables)</a>
+6. <a href="#query-with-empty-fields">Query (with empty fields)</a>
+7. <a href="#mutation">Mutation</a>
+8. <a href="#mutation-with-variables">Mutation (with variables)</a>
 
 #### Query:
 
@@ -251,7 +259,7 @@ Array
 ```
 
 
-#### Subscription (with required variables):
+#### Mutation (with required variables):
 
 ```php
 $query = mutation([
