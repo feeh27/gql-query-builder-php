@@ -32,7 +32,8 @@ $subscription=subscription($options);
 5. <a href=#query-with-required-variables>Query (with required variables)</a>
 6. <a href="#query-with-empty-fields">Query (with empty fields)</a>
 7. <a href="#mutation">Mutation</a>
-8. <a href="#mutation-with-variables">Mutation (with variables)</a>
+8. <a href="#mutation-with-required-variables">Mutation (with required variables)</a>
+9. <a href="#subscription">Subscription</a>
 
 #### Query:
 
@@ -290,6 +291,36 @@ Array
             [name] => Jon Doe
             [email] => jon.doe@example.com
             [password] => 123456
+        )
+)
+    
+*/
+```
+
+#### Subscription:
+
+```php
+
+$query = subscription([
+    "operation" => "thoughtCreate",
+    "variables" => [
+        "name" => "Tyrion Lannister",
+        "thought" => "I drink and I know things."
+    ],
+    "fields" => ["id"]
+]);
+
+print_r($query);
+
+/*
+
+Array
+(
+    [query] => subscription($name: String, $thought: String) { thoughtCreate(name: $name, thought: $thought) { id } }
+    [variables] => Array
+        (
+            [name] => Tyrion Lannister
+            [thought] => I drink and I know things.
         )
 )
     
