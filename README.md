@@ -164,6 +164,22 @@ $query=query([
     "fields"=>["userId","token"]
 ]);
 
+/*
+
+Array
+(
+    [query] => query($email: String!, $password: String!) { userLogin(email: $email, password: $password) { userId, token } }
+    [variables] => Array
+        (
+            [email] => jon.doe@example.com
+            [password] => 123456
+        )
+
+)
+
+*/
+```
+
 
 
 #### Query (with empty fields):

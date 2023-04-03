@@ -122,7 +122,7 @@ class Utils
                     $ret[] = $name;
                     continue;
                 }
-    
+
                 $ret[] = "$name { " . self::queryFieldsMap($field) . " }";
                 continue;
             }
@@ -189,12 +189,14 @@ class Utils
     public static function queryDataNameAndArgumentMap(array $variables)
     {
         if ($variables) {
-            $dataString = '';
+            $dataString = [];
             foreach ($variables as $key => $value) {
-                $dataString .= $value &&  isset($value['name']) ? $value['name'] : $key;
-                $dataString .= ': $' . $key;
+                $s = $value &&  isset($value['name']) ? $value['name'] : $key;
+                $s .= ': $' . $key;
+
+                $dataString[] = $s;
             }
-            return '(' . $dataString . ')';
+            return '(' . implode(", ", $dataString) . ')';
         }
         return '';
     }

@@ -54,7 +54,7 @@ class DefaultQueryAdapter
             }
         }
 
-        return $this->operationWrapperTemplate(implode(" ", $tmp));
+        return $this->operationWrapperTemplate(implode(", ", $tmp));
     }
 
     private function operationWrapperTemplate(string $content)
