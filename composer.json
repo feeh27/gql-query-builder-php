@@ -1,6 +1,7 @@
 {
     "name": "mathsgod/gql-query-builder-php",
     "license": "MIT",
+    "description": "A PHP library to build GraphQL queries",
     "authors": [
         {
             "name": "Raymond Chong",
