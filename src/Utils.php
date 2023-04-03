@@ -4,6 +4,21 @@ namespace GQLQueryBuilder;
 
 class Utils
 {
+    public static function operationOrAlias($operation)
+    {
+        if (is_string($operation)) {
+            return $operation;
+        }
+
+        if (isset($operation["alias"]) && isset($operation["name"])) {
+            return $operation["alias"] . " " . $operation["name"];
+        }
+    }
+
+    public static function operationOrFragment($field)
+    {
+        return self::isFragment($field) ? $field["operation"] : self::operationOrAlias($field["operation"]);
+    }
 
     public static function isNestedField($object)
     {
@@ -72,25 +87,53 @@ class Utils
         return $type;
     }
 
-
-    static function  queryFieldsMap(array $fields): string
+    public static function isFragment($field)
     {
-        $query = '';
+        return is_array($field) && isset($field["fregment"]) && $field["fregment"] === true;
+    }
+
+    public static function getFragment($field): string
+    {
+        return self::isFragment($field) ? "... on" : "";
+    }
+
+    public static function queryNestedFieldMap($field)
+    {
+        return self::getFragment($field) . self::operationOrFragment($field) . " " .
+            (self::isFragment($field) ? "" : self::queryDataNameAndArgumentMap($field["variables"])) . " " .
+            ($field["fields"] ? " { " . self::queryFieldsMap($field["fields"]) . " } " : "");
+    }
+
+
+    static function queryFieldsMap(array $fields): string
+    {
+        $ret = [];
 
         foreach ($fields as $name => $field) {
 
-            if (is_string($field)) {
-                $query .= $field . ' ';
+            if (self::isNestedField($field)) {
+                $ret[] = self::queryNestedFieldMap($field);
                 continue;
             }
 
             if (is_array($field)) {
-                $query .= "$name { " . self::queryFieldsMap($field) . "} ";
+
+                if (count($field) === 0) {
+                    $ret[] = $name;
+                    continue;
+                }
+    
+                $ret[] = "$name { " . self::queryFieldsMap($field) . " }";
+                continue;
+            }
+
+            if (is_string($field)) {
+                $ret[] = $field;
                 continue;
             }
         }
 
-        return $query;
+        return implode(", ", $ret);
     }
 
     static function getDeepestVariables(array $innerFields, array $variables)
@@ -99,11 +142,12 @@ class Utils
         if ($innerFields) {
             foreach ($innerFields as $field) {
                 if (Utils::isNestedField($field)) {
-                    $variables = [
-                        ...$variables,
-                        ...$field['variables'],
-                        ...self::getDeepestVariables($field['fields'], $variables)
-                    ];
+
+                    $variables = array_merge(
+                        $variables,
+                        $field['variables'],
+                        self::getDeepestVariables($field['fields'], $variables)
+                    );
                 } else {
                     if (is_array($field)) {
                         $variables = self::getDeepestVariables($field, $variables);
@@ -127,11 +171,14 @@ class Utils
         $ret = [];
 
         foreach ($operations as $operation) {
-            $ret = [
-                ...$ret,
-                ...$operation['variables'],
-                ...$operation['fields'] ? self::getNestedVariables($operation['fields']) : []
-            ];
+
+            if (isset($operation['variables'])) {
+                $ret = array_merge($ret, $operation['variables']);
+            }
+
+            if (isset($operation['fields'])) {
+                $ret = array_merge($ret, self::getNestedVariables($operation['fields']));
+            }
         }
 
         return $ret;

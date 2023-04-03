@@ -4,6 +4,11 @@ namespace GQLQueryBuilder;
 
 function query(array $options): array
 {
-    $defaultAdapter = new DefaultQueryAdapter($options);
-    return $defaultAdapter->queryBuilder();
+    if (array_is_list($options)) {
+        $defaultAdapter = new DefaultQueryAdapter($options);
+        return $defaultAdapter->queriesBuilder($options);
+    } else {
+        $defaultAdapter = new DefaultQueryAdapter($options);
+        return $defaultAdapter->queryBuilder();
+    }
 }
