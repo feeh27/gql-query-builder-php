@@ -8,7 +8,7 @@ This project is based on [GraphQL Query Builder](https://www.npmjs.com/package/g
 
 ## Install
 
-`composer require mathsgod/gql-query-builder`
+`composer require mathsgod/gql-query-builder-php`
 
 ## Usage
 
