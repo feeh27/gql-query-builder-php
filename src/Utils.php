@@ -121,6 +121,18 @@ class Utils
         $ret = [];
 
         foreach ($fields as $name => $field) {
+            // Fragments
+            if (is_string($name) && str_starts_with($name, '...on ')) {
+                if (is_array($field)) {
+                    $ret[] = "{$name} { " . self::queryFieldsMap($field) . " }";
+                    continue;
+                }
+            }
+
+            if (is_string($field) && str_starts_with($field, '...')) {
+                $ret[] = $field;
+                continue;
+            }
 
             if (self::isNestedField($field)) {
                 $ret[] = self::queryNestedFieldMap($field);
